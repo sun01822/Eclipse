@@ -116,8 +116,9 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          HomeScreen(selectedImage: selectedImage),
+                      builder: (context) => HomeScreen(
+                          selectedImage: selectedImage,
+                          userName: widget.userName), // Pass userName here
                     ),
                   );
                 }
