@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               selectedImage,
               width: 200.0,
               height: 200.0,
-              fit: BoxFit.cover,
+              fit: BoxFit.scaleDown,
             ),
             // Add other content for your home screen here
           ],
