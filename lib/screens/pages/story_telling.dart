@@ -20,12 +20,22 @@ class _StoryTellingState extends State<StoryTelling> {
     'Luna: Do you know about Eclipse?',
     'Luna: Text 2',
     'Luna: Text 3',
+    'Luna: Do you know about Eclipse?',
+    'Luna: Text 2',
+    'Luna: Text 3',
+    'Luna: Text 2',
+    'Luna: Text 3',
   ]; // Luna's dialogues
 
   List<String> userTexts = [
     'User: Yes, I do!',
     'User: Text 2',
     'User: Text 3',
+    'Luna: Do you know about Eclipse?',
+    'Luna: Text 2',
+    'Luna: Text 3',
+    'Luna: Text 2',
+    'Luna: Text 3',
   ]; // User's responses
 
   int currentMessageIndex = 0; // Track the current message to display
@@ -94,6 +104,20 @@ class MessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BorderRadius borderRadius = isUserMessage
+        ? const BorderRadius.only(
+            topLeft: Radius.circular(15.0),
+            topRight: Radius.circular(15.0),
+            bottomLeft: Radius.circular(15.0),
+            bottomRight: Radius.circular(0.0), // Adjust for user message
+          )
+        : const BorderRadius.only(
+            topLeft: Radius.circular(15.0),
+            topRight: Radius.circular(15.0),
+            bottomLeft: Radius.circular(0.0), // Adjust for Luna's message
+            bottomRight: Radius.circular(15.0),
+          );
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       child: Row(
@@ -108,18 +132,20 @@ class MessageWidget extends StatelessWidget {
               fit: BoxFit.scaleDown,
             ),
           Container(
-            width: MediaQuery.of(context).size.width * 0.7, // Adjust the width
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.7,
+            ),
             decoration: BoxDecoration(
               color: isUserMessage ? Colors.green : Colors.blue,
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: borderRadius,
             ),
             padding: const EdgeInsets.all(10.0),
             child: TyperAnimatedTextKit(
               text: [text],
               speed: const Duration(milliseconds: 50),
               textStyle: const TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+                fontSize: 16.0, // Adjust font size
+                fontWeight: FontWeight.normal, // Adjust font weight
                 color: Colors.white,
               ),
             ),
