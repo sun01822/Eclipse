@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:lottie/lottie.dart'; // Import Lottie package
 
 class StoryTelling extends StatefulWidget {
   final String userName;
@@ -12,33 +13,42 @@ class StoryTelling extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _StoryTellingState createState() => _StoryTellingState();
 }
 
 class _StoryTellingState extends State<StoryTelling> {
-  List<String> lunaTexts = [
-    'Luna: Do you know about Eclipse?',
-    'Luna: Text 2',
-    'Luna: Text 3',
-    'Luna: Do you know about Eclipse?',
-    'Luna: Text 2',
-    'Luna: Text 3',
-    'Luna: Text 2',
-    'Luna: Text 3',
-  ]; // Luna's dialogues
+  late List<String> lunaTexts; // Declare lunaTexts as a field
+  late List<String> userTexts; // Declare userTexts as a field
+  
+  @override
+  void initState() {
+    super.initState();
 
-  List<String> userTexts = [
-    'User: Yes, I do!',
-    'User: Text 2',
-    'User: Text 3',
-    'Luna: Do you know about Eclipse?',
-    'Luna: Text 2',
-    'Luna: Text 3',
-    'Luna: Text 2',
-    'Luna: Text 3',
-  ]; // User's responses
+    // Initialize lunaTexts and userTexts using widget.userName
+    lunaTexts = [
+      'Luna: Hi!! ${widget.userName}', // Interpolate userName here
+      'Luna: Do you know about Eclipse?',
+      'Luna: Text 2',
+      'Luna: Text 3',
+      'Luna: Text 2',
+      'Luna: Text 3',
+      'Luna: Text 2',
+      'Luna: Text 3',
+    ];
 
-  int currentMessageIndex = 0; // Track the current message to display
+    userTexts = [
+      'User: Hello!!',
+      'User: Yes, I do!',
+      'User: Text 2',
+      'User: Text 3',
+      'Luna: Do you know about Eclipse?',
+      'Luna: Text 2',
+      'Luna: Text 3',
+    ];
+  }
+
+  int currentMessageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -46,45 +56,56 @@ class _StoryTellingState extends State<StoryTelling> {
       appBar: AppBar(
         title: const Text('StoryTelling Page'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                itemCount: currentMessageIndex + 1,
-                itemBuilder: (context, index) {
-                  final isUserMessage = index % 2 != 0;
-                  final text = isUserMessage
-                      ? userTexts[index ~/ 2]
-                      : lunaTexts[index ~/ 2];
+      body: Stack(
+        children: <Widget>[
+          // Display Lottie animation as a background
+          Lottie.asset(
+            'assets/storybg.json', // Replace with your Lottie file path
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: currentMessageIndex + 1,
+                    itemBuilder: (context, index) {
+                      final isUserMessage = index % 2 != 0;
+                      final text = isUserMessage
+                          ? userTexts[index ~/ 2]
+                          : lunaTexts[index ~/ 2];
 
-                  return MessageWidget(
-                    isUserMessage: isUserMessage,
-                    text: text,
-                    imageAsset: isUserMessage
-                        ? widget.selectedImage
-                        : 'luna.png',
-                  );
-                },
-              ),
+                      return MessageWidget(
+                        isUserMessage: isUserMessage,
+                        text: text,
+                        imageAsset: isUserMessage
+                            ? widget.selectedImage
+                            : 'luna.png',
+                      );
+                    },
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        if (currentMessageIndex <
+                            lunaTexts.length + userTexts.length - 1) {
+                          currentMessageIndex++;
+                        }
+                      });
+                    },
+                    child: const Text('Continue'),
+                  ),
+                ),
+              ],
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    if (currentMessageIndex <
-                        lunaTexts.length + userTexts.length - 1) {
-                      currentMessageIndex++;
-                    }
-                  });
-                },
-                child: const Text('Continue'),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -109,12 +130,12 @@ class MessageWidget extends StatelessWidget {
             topLeft: Radius.circular(15.0),
             topRight: Radius.circular(15.0),
             bottomLeft: Radius.circular(15.0),
-            bottomRight: Radius.circular(0.0), // Adjust for user message
+            bottomRight: Radius.circular(0.0),
           )
         : const BorderRadius.only(
             topLeft: Radius.circular(15.0),
             topRight: Radius.circular(15.0),
-            bottomLeft: Radius.circular(0.0), // Adjust for Luna's message
+            bottomLeft: Radius.circular(0.0),
             bottomRight: Radius.circular(15.0),
           );
 
@@ -127,8 +148,8 @@ class MessageWidget extends StatelessWidget {
           if (!isUserMessage)
             Image.asset(
               'luna.png',
-              width: 50.0,
-              height: 50.0,
+              width: 150.0,
+              height: 150.0,
               fit: BoxFit.scaleDown,
             ),
           Container(
@@ -140,12 +161,13 @@ class MessageWidget extends StatelessWidget {
               borderRadius: borderRadius,
             ),
             padding: const EdgeInsets.all(10.0),
+            // ignore: deprecated_member_use
             child: TyperAnimatedTextKit(
               text: [text],
               speed: const Duration(milliseconds: 50),
               textStyle: const TextStyle(
-                fontSize: 16.0, // Adjust font size
-                fontWeight: FontWeight.normal, // Adjust font weight
+                fontSize: 16.0,
+                fontWeight: FontWeight.normal,
                 color: Colors.white,
               ),
             ),
@@ -153,8 +175,8 @@ class MessageWidget extends StatelessWidget {
           if (isUserMessage)
             Image.asset(
               imageAsset,
-              width: 50.0,
-              height: 50.0,
+              width: 150.0,
+              height: 150.0,
               fit: BoxFit.scaleDown,
             ),
         ],
