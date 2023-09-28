@@ -1,9 +1,27 @@
+import 'package:eclipse/screens/pages/about_us.dart';
+import 'package:eclipse/screens/pages/game.dart';
+import 'package:eclipse/screens/pages/quiz_game.dart';
+import 'package:eclipse/screens/pages/story_telling.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
+  final String userName;
   final String selectedImage;
 
-  const HomeScreen({Key? key, required this.selectedImage}) : super(key: key);
+  // Add static variables to access the name and selected image
+  static String homeScreenName = "";
+  static String homeScreenSelectedImage = "";
+
+  // Modify the constructor to initialize userName and selectedImage
+  HomeScreen({
+    Key? key,
+    required this.selectedImage,
+    required this.userName,
+  }) : super(key: key) {
+    // Initialize the static variables with the data received in the constructor
+    HomeScreen.homeScreenName = userName;
+    HomeScreen.homeScreenSelectedImage = selectedImage;
+  }
 
   @override
   // ignore: library_private_types_in_public_api
@@ -12,12 +30,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+   // Update the static variables with the data
 
   final List<Widget> _pages = [
-    const Page1(),
-    const Page2(),
-    const Page3(),
-    const Page4(),
+    StoryTelling(
+      userName: HomeScreen.homeScreenName, // Use the static variable
+      selectedImage:
+          HomeScreen.homeScreenSelectedImage, // Use the static variable
+    ),
+    const QuizGame(),
+    const Game(),
+    const AboutUs(),
   ];
 
   void _onTabTapped(int index) {
@@ -30,26 +53,26 @@ class _HomeScreenState extends State<HomeScreen> {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
       onTap: _onTabTapped,
-      selectedItemColor: Colors.orange, // Set the selected item color
-      unselectedItemColor: Colors.grey, // Set the unselected item color
-      iconSize: 32, // Increase the icon size
-      type: BottomNavigationBarType.fixed, // Ensure all icons are visible
+      selectedItemColor: Colors.orange,
+      unselectedItemColor: Colors.grey,
+      iconSize: 32,
+      type: BottomNavigationBarType.fixed,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Icon(Icons.book_sharp),
+          label: 'Story',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Search',
+          icon: Icon(Icons.quiz),
+          label: 'Quiz',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite),
-          label: 'Favorites',
+          icon: Icon(Icons.games_sharp),
+          label: 'Game',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Profile',
+          label: 'About',
         ),
       ],
     );
@@ -58,55 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-      ),
       body: _pages[_currentIndex],
       bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-}
-
-class Page1 extends StatelessWidget {
-  const Page1({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Page 1 Content'),
-    );
-  }
-}
-
-class Page2 extends StatelessWidget {
-  const Page2({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Page 2 Content'),
-    );
-  }
-}
-
-class Page3 extends StatelessWidget {
-  const Page3({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Page 3 Content'),
-    );
-  }
-}
-
-class Page4 extends StatelessWidget {
-  const Page4({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Page 4 Content'),
     );
   }
 }
