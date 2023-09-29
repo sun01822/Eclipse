@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:lottie/lottie.dart'; // Import Lottie package
+import 'package:lottie/lottie.dart';
+import 'quiz_game.dart'; // Import your QuizGame widget file
 
 class StoryTelling extends StatefulWidget {
   final String userName;
@@ -20,6 +21,7 @@ class StoryTelling extends StatefulWidget {
 class _StoryTellingState extends State<StoryTelling> {
   late List<String> lunaTexts;
   late List<String> userTexts;
+  bool showQuizButton = false;
 
   @override
   void initState() {
@@ -49,29 +51,27 @@ class _StoryTellingState extends State<StoryTelling> {
 
   int currentMessageIndex = 0;
 
-  // Function to display messages automatically
-  void displayMessages(int index) async {
+  Future<void> displayMessages(int index) async {
     if (index < lunaTexts.length + userTexts.length) {
-      // Delay before displaying the next message
       await Future.delayed(const Duration(seconds: 2));
 
       setState(() {
         currentMessageIndex = index;
       });
 
-      // Determine the delay based on the length of the current message
       final currentMessage = (index % 2 == 0) ? lunaTexts[index ~/ 2] : userTexts[index ~/ 2];
       final wordsInCurrentMessage = currentMessage.split(' ').length;
-      final delayInSeconds = wordsInCurrentMessage * 0.2; // Adjust the factor as needed
+      final delayInSeconds = wordsInCurrentMessage * 0.2;
 
-      // Delay after message display
       await Future.delayed(Duration(seconds: delayInSeconds.toInt() + 1));
 
       if (index == lunaTexts.length + userTexts.length - 1) {
-        // If it's the last message, start from the beginning
-        displayMessages(0);
+        setState(() {
+          currentMessageIndex = index;
+          showQuizButton = true;
+        });
       } else {
-        displayMessages(index + 1); // Display the next message
+        displayMessages(index + 1);
       }
     }
   }
@@ -118,6 +118,21 @@ class _StoryTellingState extends State<StoryTelling> {
                     ),
                   ),
                 ),
+                if (showQuizButton)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const QuizGame(),
+                          ),
+                        );
+                      },
+                      child: const Text('Go to Quiz'),
+                    ),
+                  ),
               ],
             ),
           ),
