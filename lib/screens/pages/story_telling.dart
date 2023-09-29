@@ -20,7 +20,7 @@ class StoryTelling extends StatefulWidget {
 class _StoryTellingState extends State<StoryTelling> {
   late List<String> lunaTexts; // Declare lunaTexts as a field
   late List<String> userTexts; // Declare userTexts as a field
-  
+
   @override
   void initState() {
     super.initState();
@@ -29,9 +29,7 @@ class _StoryTellingState extends State<StoryTelling> {
     lunaTexts = [
       'Luna: Hi!! ${widget.userName}', // Interpolate userName here
       'Luna: Do you know about Eclipse?',
-      'Luna: Text 2',
-      'Luna: Text 3',
-      'Luna: Text 2',
+      'The left and right padding for the message container have been adjusted to 10 while keeping the top and bottom padding as 20',
       'Luna: Text 3',
       'Luna: Text 2',
       'Luna: Text 3',
@@ -40,8 +38,7 @@ class _StoryTellingState extends State<StoryTelling> {
     userTexts = [
       'User: Hello!!',
       'User: Yes, I do!',
-      'User: Text 2',
-      'User: Text 3',
+      'The left and right padding for the message container have been adjusted to 10 while keeping the top and bottom padding as 20',
       'Luna: Do you know about Eclipse?',
       'Luna: Text 2',
       'Luna: Text 3',
@@ -66,26 +63,33 @@ class _StoryTellingState extends State<StoryTelling> {
             height: double.infinity,
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.fromLTRB(5, 20, 5, 20),
             child: Column(
               children: <Widget>[
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: currentMessageIndex + 1,
-                    itemBuilder: (context, index) {
-                      final isUserMessage = index % 2 != 0;
-                      final text = isUserMessage
-                          ? userTexts[index ~/ 2]
-                          : lunaTexts[index ~/ 2];
+                  child: SingleChildScrollView(
+                    // Wrap with SingleChildScrollView
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .stretch, // Stretch messages horizontally
+                      children: List.generate(
+                        currentMessageIndex + 1,
+                        (index) {
+                          final isUserMessage = index % 2 != 0;
+                          final text = isUserMessage
+                              ? userTexts[index ~/ 2]
+                              : lunaTexts[index ~/ 2];
 
-                      return MessageWidget(
-                        isUserMessage: isUserMessage,
-                        text: text,
-                        imageAsset: isUserMessage
-                            ? widget.selectedImage
-                            : 'luna.png',
-                      );
-                    },
+                          return MessageWidget(
+                            isUserMessage: isUserMessage,
+                            text: text,
+                            imageAsset: isUserMessage
+                                ? widget.selectedImage
+                                : 'assets/luna.png',
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
                 Align(
@@ -139,6 +143,11 @@ class MessageWidget extends StatelessWidget {
             bottomRight: Radius.circular(15.0),
           );
 
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final imageSize = screenWidth > 600 ? 150.0 : 100.0;
+    final fontSize = screenWidth > 600 ? 16.0 : 14.0;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       child: Row(
@@ -147,36 +156,41 @@ class MessageWidget extends StatelessWidget {
         children: [
           if (!isUserMessage)
             Image.asset(
-              'luna.png',
-              width: 150.0,
-              height: 150.0,
+              'assets/luna.png',
+              width: imageSize,
+              height: imageSize,
               fit: BoxFit.scaleDown,
             ),
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.7,
-            ),
-            decoration: BoxDecoration(
-              color: isUserMessage ? Colors.green : Colors.blue,
-              borderRadius: borderRadius,
-            ),
-            padding: const EdgeInsets.all(10.0),
-            // ignore: deprecated_member_use
-            child: TyperAnimatedTextKit(
-              text: [text],
-              speed: const Duration(milliseconds: 50),
-              textStyle: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.normal,
-                color: Colors.white,
+          Align(
+            alignment: isUserMessage
+                ? Alignment.centerRight
+                : Alignment.centerLeft, // Align based on user message
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              decoration: BoxDecoration(
+                color: isUserMessage ? Colors.green : Colors.blue,
+                borderRadius: borderRadius,
+              ),
+              padding: const EdgeInsets.all(10.0),
+              // ignore: deprecated_member_use
+              child: TyperAnimatedTextKit(
+                text: [text],
+                speed: const Duration(milliseconds: 50),
+                textStyle: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
           if (isUserMessage)
             Image.asset(
               imageAsset,
-              width: 150.0,
-              height: 150.0,
+              width: imageSize,
+              height: imageSize,
               fit: BoxFit.scaleDown,
             ),
         ],

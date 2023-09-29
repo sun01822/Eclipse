@@ -1,6 +1,6 @@
 import 'package:eclipse/screens/character_selection_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart'; // Import the lottie package
+import 'package:lottie/lottie.dart';
 
 class InputNameScreen extends StatefulWidget {
   const InputNameScreen({Key? key}) : super(key: key);
@@ -19,17 +19,18 @@ class _InputNameScreenState extends State<InputNameScreen> {
       appBar: AppBar(
         title: const Text('Input Name Screen'),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Lottie.asset( // Use Lottie.asset to load the animation from a JSON file
-                'welcome.json', // Replace with your Lottie animation file path
-                width: 400, // Set the width of the animation
-                height: 400, // Set the height of the animation
-                fit: BoxFit.cover, // Adjust the fit as needed
+              Center(
+                child: Lottie.asset(
+                  'assets/welcome.json',
+                  width: 300,
+                  height: 300,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: 20.0),
               const Text(
@@ -40,12 +41,15 @@ class _InputNameScreenState extends State<InputNameScreen> {
                 ),
               ),
               const SizedBox(height: 20.0),
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  hintText: 'Enter Your Name',
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
+              Padding(
+                padding: const EdgeInsets.all(20.0), // Add padding to the TextField
+                child: TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter Your Name',
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
               const SizedBox(height: 20.0),
