@@ -12,21 +12,20 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late double opacity;
-  late bool showText;
+  bool showText = false;
 
   @override
   void initState() {
     super.initState();
-    opacity = 0.0;
-    showText = false;
 
-    Timer(const Duration(seconds: 1), () {
+    // Load the splash screen for 3 seconds
+    Timer(const Duration(seconds: 3), () {
       setState(() {
         showText = true;
       });
 
-      Timer(const Duration(seconds: 1), () {
+      // Navigate to the next screen after 2 seconds
+      Timer(const Duration(seconds: 2), () {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -35,11 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
         );
       });
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -52,6 +46,25 @@ class _SplashScreenState extends State<SplashScreen> {
             "assets/splash.gif",
             fit: BoxFit.cover, // Make the GIF full screen
             gaplessPlayback: true, // Prevent GIF repetition
+            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+              // Delay each frame by 100 milliseconds (adjust as needed)
+              return FutureBuilder<void>(
+                future: Future.delayed(
+                  const Duration(milliseconds: 100),
+                  () => true,
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return child;
+                  } else {
+                    return const AnimatedSwitcher(
+                      duration: Duration(milliseconds: 200),
+                      child: SizedBox.shrink(),
+                    );
+                  }
+                },
+              );
+            },
           ),
           AnimatedOpacity(
             opacity: showText ? 1.0 : 0.0,
