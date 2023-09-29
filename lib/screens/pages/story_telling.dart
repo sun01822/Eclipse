@@ -18,16 +18,15 @@ class StoryTelling extends StatefulWidget {
 }
 
 class _StoryTellingState extends State<StoryTelling> {
-  late List<String> lunaTexts; // Declare lunaTexts as a field
-  late List<String> userTexts; // Declare userTexts as a field
+  late List<String> lunaTexts;
+  late List<String> userTexts;
 
   @override
   void initState() {
     super.initState();
 
-    // Initialize lunaTexts and userTexts using widget.userName
     lunaTexts = [
-      'Luna: Hi!! ${widget.userName}', // Interpolate userName here
+      'Luna: Hi!! ${widget.userName}',
       'Luna: Do you know about Eclipse?',
       'The left and right padding for the message container have been adjusted to 10 while keeping the top and bottom padding as 20',
       'Luna: Text 3',
@@ -43,9 +42,39 @@ class _StoryTellingState extends State<StoryTelling> {
       'Luna: Text 2',
       'Luna: Text 3',
     ];
+
+    // Start automatically displaying messages
+    displayMessages(0);
   }
 
   int currentMessageIndex = 0;
+
+  // Function to display messages automatically
+  void displayMessages(int index) async {
+    if (index < lunaTexts.length + userTexts.length) {
+      // Delay before displaying the next message
+      await Future.delayed(const Duration(seconds: 2));
+
+      setState(() {
+        currentMessageIndex = index;
+      });
+
+      // Determine the delay based on the length of the current message
+      final currentMessage = (index % 2 == 0) ? lunaTexts[index ~/ 2] : userTexts[index ~/ 2];
+      final wordsInCurrentMessage = currentMessage.split(' ').length;
+      final delayInSeconds = wordsInCurrentMessage * 0.2; // Adjust the factor as needed
+
+      // Delay after message display
+      await Future.delayed(Duration(seconds: delayInSeconds.toInt() + 1));
+
+      if (index == lunaTexts.length + userTexts.length - 1) {
+        // If it's the last message, start from the beginning
+        displayMessages(0);
+      } else {
+        displayMessages(index + 1); // Display the next message
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +84,8 @@ class _StoryTellingState extends State<StoryTelling> {
       ),
       body: Stack(
         children: <Widget>[
-          // Display Lottie animation as a background
           Lottie.asset(
-            'assets/storybg.json', // Replace with your Lottie file path
+            'assets/storybg.json',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -68,10 +96,8 @@ class _StoryTellingState extends State<StoryTelling> {
               children: <Widget>[
                 Expanded(
                   child: SingleChildScrollView(
-                    // Wrap with SingleChildScrollView
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment
-                          .stretch, // Stretch messages horizontally
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: List.generate(
                         currentMessageIndex + 1,
                         (index) {
@@ -90,20 +116,6 @@ class _StoryTellingState extends State<StoryTelling> {
                         },
                       ),
                     ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        if (currentMessageIndex <
-                            lunaTexts.length + userTexts.length - 1) {
-                          currentMessageIndex++;
-                        }
-                      });
-                    },
-                    child: const Text('Continue'),
                   ),
                 ),
               ],
@@ -164,7 +176,7 @@ class MessageWidget extends StatelessWidget {
           Align(
             alignment: isUserMessage
                 ? Alignment.centerRight
-                : Alignment.centerLeft, // Align based on user message
+                : Alignment.centerLeft,
             child: Container(
               constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -178,6 +190,7 @@ class MessageWidget extends StatelessWidget {
               child: TyperAnimatedTextKit(
                 text: [text],
                 speed: const Duration(milliseconds: 50),
+                isRepeatingAnimation: false,
                 textStyle: TextStyle(
                   fontSize: fontSize,
                   fontWeight: FontWeight.normal,
