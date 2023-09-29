@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            "splash.gif",
+            "assets/splash.gif",
             fit: BoxFit.cover, // Make the GIF full screen
             gaplessPlayback: true, // Prevent GIF repetition
           ),
@@ -65,13 +65,14 @@ class _SplashScreenState extends State<SplashScreen> {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
+                    fontSize: 32.0,
                   ),
                 ),
                 SizedBox(height: 16),
                 // Loading circle
                 SpinKitFadingCircle(
-                  color: Color.fromARGB(255, 255, 255, 255), // Adjust the loading circle color
+                  color: Color.fromARGB(
+                      255, 255, 255, 255), // Adjust the loading circle color
                   size: 50.0, // Adjust the loading circle size
                 ),
               ],
