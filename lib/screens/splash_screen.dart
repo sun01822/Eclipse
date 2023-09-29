@@ -18,8 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Load the splash screen for 3 seconds
-    Timer(const Duration(seconds: 3), () {
+    // Load the splash screen for 1 seconds
+    Timer(const Duration(seconds: 1), () {
       setState(() {
         showText = true;
       });
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
               // Delay each frame by 100 milliseconds (adjust as needed)
               return FutureBuilder<void>(
                 future: Future.delayed(
-                  const Duration(milliseconds: 100),
+                  const Duration(milliseconds: 50),
                   () => true,
                 ),
                 builder: (context, snapshot) {
@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     return child;
                   } else {
                     return const AnimatedSwitcher(
-                      duration: Duration(milliseconds: 200),
+                      duration: Duration(milliseconds: 100),
                       child: SizedBox.shrink(),
                     );
                   }

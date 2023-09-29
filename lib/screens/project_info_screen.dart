@@ -1,3 +1,4 @@
+import 'package:eclipse/models/slider_item.dart';
 import 'package:eclipse/screens/input_name_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -145,14 +146,3 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
   }
 }
 
-class SliderItem {
-  final String animationAsset;
-  final String headline;
-  final String description;
-
-  SliderItem({
-    required this.animationAsset,
-    required this.headline,
-    required this.description,
-  });
-}
