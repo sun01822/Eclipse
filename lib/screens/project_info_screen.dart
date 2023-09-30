@@ -1,42 +1,27 @@
-import 'package:eclipse/models/slider_item.dart';
-import 'package:eclipse/screens/input_name_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:lottie/lottie.dart';
+import 'package:eclipse/data/slider_item.dart';
+import 'package:eclipse/screens/input_name_screen.dart';
 
 class ProjectInfoScreen extends StatefulWidget {
   const ProjectInfoScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _ProjectInfoScreenState createState() => _ProjectInfoScreenState();
 }
 
 class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
   int selectedImageIndex = 0;
-  final List<SliderItem> items = [
-    SliderItem(
-      animationAsset: 'assets/storytelling.json',
-      headline: 'Story Telling',
-      description: 'Luna will help you to know more about Eclipse',
-    ),
-    SliderItem(
-      animationAsset: 'assets/quiz.json',
-      headline: 'Quiz Game',
-      description: 'You can check your knowledge about Eclipse',
-    ),
-    SliderItem(
-      animationAsset: 'assets/game.json',
-      headline: 'Eclipse Game',
-      description: 'You can visualize Eclipse using this game',
-    ),
-    // Add more items as needed
-  ];
 
   @override
   Widget build(BuildContext context) {
     int pageLength = items.length;
+
+    // Get screen width and height
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -78,13 +63,14 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       body: Column(
         children: [
           Expanded(
-            child: Container( // Added a Container to wrap the CarouselSlider
-              margin: const EdgeInsets.all(10.0), // Add margin around the entire slider
+            child: Container(
+              margin: const EdgeInsets.all(10.0),
               child: CarouselSlider(
                 options: CarouselOptions(
-                  height: 400.0,
+                  height:
+                      screenHeight * 0.4, // Set a percentage of screen height
                   autoPlay: true,
-                  enlargeCenterPage: false, // Set to false
+                  enlargeCenterPage: false,
                   onPageChanged: (index, reason) {
                     setState(() {
                       selectedImageIndex = index;
@@ -100,8 +86,10 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                           Center(
                             child: Lottie.asset(
                               item.animationAsset,
-                              width: 200.0,
-                              height: 200.0,
+                              width: screenWidth *
+                                  0.5, // Set a percentage of screen width
+                              height:
+                                  screenWidth * 0.5, // Maintain aspect ratio
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -145,4 +133,3 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     );
   }
 }
-

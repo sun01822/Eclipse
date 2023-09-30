@@ -1,3 +1,5 @@
+import 'package:eclipse/data/developers.dart';
+import 'package:eclipse/models/developer.dart';
 import 'package:flutter/material.dart';
 
 class AboutUs extends StatelessWidget {
@@ -5,20 +7,6 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Developer> developers = [
-      Developer(
-        name: 'John Doe',
-        description: 'Flutter Developer',
-        imageAsset: 'assets/image1.png', // Replace with actual image path
-      ),
-      Developer(
-        name: 'Jane Smith',
-        description: 'UI/UX Designer',
-        imageAsset: 'assets/image2.png', // Replace with actual image path
-      ),
-      // Add more developers here
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('About Us'),
@@ -41,22 +29,11 @@ class AboutUs extends StatelessWidget {
   }
 }
 
-class Developer {
-  final String name;
-  final String description;
-  final String imageAsset;
-
-  Developer({
-    required this.name,
-    required this.description,
-    required this.imageAsset,
-  });
-}
 
 class DeveloperCard extends StatelessWidget {
   final Developer developer;
 
-  const DeveloperCard({super.key, required this.developer});
+  const DeveloperCard({Key? key, required this.developer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
