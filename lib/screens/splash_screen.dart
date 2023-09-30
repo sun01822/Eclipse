@@ -18,8 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Load the splash screen for 1 seconds
-    Timer(const Duration(seconds: 1), () {
+    // Load the splash screen for 1.5 seconds
+    Timer(const Duration(milliseconds: 1500), () {
       setState(() {
         showText = true;
       });
@@ -46,49 +46,31 @@ class _SplashScreenState extends State<SplashScreen> {
             "assets/splash.gif",
             fit: BoxFit.cover, // Make the GIF full screen
             gaplessPlayback: true, // Prevent GIF repetition
-            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-              // Delay each frame by 100 milliseconds (adjust as needed)
-              return FutureBuilder<void>(
-                future: Future.delayed(
-                  const Duration(milliseconds: 50),
-                  () => true,
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return child;
-                  } else {
-                    return const AnimatedSwitcher(
-                      duration: Duration(milliseconds: 100),
-                      child: SizedBox.shrink(),
-                    );
-                  }
-                },
-              );
-            },
           ),
-          AnimatedOpacity(
-            opacity: showText ? 1.0 : 0.0,
-            duration: const Duration(seconds: 2),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Eclipse",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 32.0,
+          Center(
+            child: AnimatedOpacity(
+              opacity: showText ? 1.0 : 0.0,
+              duration: const Duration(seconds: 2),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Eclipse",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32.0,
+                    ),
                   ),
-                ),
-                SizedBox(height: 16),
-                // Loading circle
-                SpinKitFadingCircle(
-                  color: Color.fromARGB(
-                      255, 255, 255, 255), // Adjust the loading circle color
-                  size: 50.0, // Adjust the loading circle size
-                ),
-              ],
+                  SizedBox(height: 16),
+                  // Loading circle
+                  SpinKitFadingCircle(
+                    color: Colors.white, // Adjust the loading circle color
+                    size: 50.0, // Adjust the loading circle size
+                  ),
+                ],
+              ),
             ),
           ),
         ],

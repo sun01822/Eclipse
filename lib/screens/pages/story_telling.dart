@@ -28,7 +28,7 @@ class _StoryTellingState extends State<StoryTelling> {
     super.initState();
 
     lunaTexts = [
-      'Luna: Hi!! ${widget.userName}',
+      'Luna: (Encouraging) "Excellent! Welcome,  ${widget.userName}. ]. Now, choose your avatar—a representation of yourself in this cosmic journey',
       'Luna: Do you know about Eclipse?',
       'The left and right padding for the message container have been adjusted to 10 while keeping the top and bottom padding as 20',
       'Luna: Text 3',

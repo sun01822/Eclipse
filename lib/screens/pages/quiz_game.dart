@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:math'; // Import the dart:math library
+import 'dart:math';
 import 'package:eclipse/data/eclipse_questions.dart';
 import 'package:eclipse/models/questions.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,6 @@ class _QuizGameState extends State<QuizGame> {
   int correctAnswers = 0;
   int remainingTime = 180; // 3 minutes in seconds
   late final ValueNotifier<int> timerNotifier;
-  late final ValueNotifier<bool> quizCompletedNotifier;
 
   late List<Question> shuffledQuestions; // Store shuffled questions
   static const int numberOfQuestionsToShow = 5;
@@ -27,14 +26,13 @@ class _QuizGameState extends State<QuizGame> {
   void initState() {
     super.initState();
     timerNotifier = ValueNotifier<int>(remainingTime);
-    quizCompletedNotifier = ValueNotifier<bool>(false);
 
     // Shuffle the list of questions
     final random = Random();
     shuffledQuestions = List.from(eclipseQuestions); // Make a copy
     shuffledQuestions.shuffle(random);
 
-    // Ensure only 15 questions are displayed
+    // Ensure only 5 questions are displayed
     shuffledQuestions = shuffledQuestions.sublist(0, numberOfQuestionsToShow);
 
     startTimer();
@@ -45,7 +43,6 @@ class _QuizGameState extends State<QuizGame> {
     Timer.periodic(interval, (Timer timer) {
       if (remainingTime == 0) {
         timer.cancel();
-        quizCompletedNotifier.value = true;
         showResultDialog();
       } else {
         remainingTime--;
@@ -65,13 +62,11 @@ class _QuizGameState extends State<QuizGame> {
   }
 
   void nextQuestion() {
-    if (currentQuestionIndex < 14) {
-      // Display the first 15 questions
+    if (currentQuestionIndex < numberOfQuestionsToShow - 1) {
       setState(() {
         currentQuestionIndex++;
       });
     } else {
-      quizCompletedNotifier.value = true;
       showResultDialog();
     }
   }
@@ -83,7 +78,7 @@ class _QuizGameState extends State<QuizGame> {
         return AlertDialog(
           title: const Text('Quiz Completed'),
           content: Text(
-              'You got $correctAnswers out of ${shuffledQuestions.length} correct!'),
+              'You got $correctAnswers out of $numberOfQuestionsToShow correct!'),
           actions: [
             TextButton(
               onPressed: () {
@@ -102,10 +97,9 @@ class _QuizGameState extends State<QuizGame> {
     setState(() {
       currentQuestionIndex = 0;
       correctAnswers = 0;
-      remainingTime = 600;
+      remainingTime = 180;
       final random = Random();
       shuffledQuestions.shuffle(random); // Shuffle questions again
-      quizCompletedNotifier.value = false;
     });
     startTimer();
   }
@@ -151,7 +145,7 @@ class _QuizGameState extends State<QuizGame> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Question ${currentQuestionIndex + 1}/${shuffledQuestions.length}',
+                    'Question ${currentQuestionIndex + 1}/$numberOfQuestionsToShow',
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontSize: 18, color: Colors.white),
                   ),
@@ -175,9 +169,7 @@ class _QuizGameState extends State<QuizGame> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10.0),
                         child: ElevatedButton(
-                          onPressed: quizCompletedNotifier.value
-                              ? null
-                              : () => checkAnswer(index),
+                          onPressed: () => checkAnswer(index),
                           child: Text(option),
                         ),
                       );
@@ -195,7 +187,6 @@ class _QuizGameState extends State<QuizGame> {
   @override
   void dispose() {
     timerNotifier.dispose();
-    quizCompletedNotifier.dispose();
     super.dispose();
   }
 }
