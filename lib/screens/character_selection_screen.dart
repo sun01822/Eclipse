@@ -39,7 +39,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Select an Image, ${widget.userName}',
+              'Chose your character, ${widget.userName}',
               style: const TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
