@@ -79,9 +79,9 @@ class _StoryTellingState extends State<StoryTelling> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('StoryTelling Page'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('StoryTelling Page'),
+      // ),
       body: Stack(
         children: <Widget>[
           Lottie.asset(
