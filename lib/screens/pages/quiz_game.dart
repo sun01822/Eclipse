@@ -108,7 +108,7 @@ class _QuizGameState extends State<QuizGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz App'),
+        // title: const Text('Quiz App'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
