@@ -116,7 +116,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                           const SizedBox(height: 10.0),
                           Text(
                             item.description,
-                            style: const TextStyle(fontSize: 16.0),
+                            style: const TextStyle(fontSize: 14.0),
                           ),
                         ],
                       );

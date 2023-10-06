@@ -30,22 +30,24 @@ class Game extends StatelessWidget {
       // appBar: AppBar(
       //   title: const Text('Game WebView'),
       // ),
-      body: Stack(
-        children: [
-          WebViewWidget(
-            controller: controller,
-          ),
-          const Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: LinearProgressIndicator(
-              // Add a LinearProgressIndicator to show loading progress
-              backgroundColor: Colors.transparent,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            WebViewWidget(
+              controller: controller,
             ),
-          ),
-        ],
+            const Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: LinearProgressIndicator(
+                // Add a LinearProgressIndicator to show loading progress
+                backgroundColor: Colors.transparent,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
